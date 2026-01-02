@@ -16,26 +16,30 @@ import med.voll.api.CRUD.core.enums.Especialidade;
 
 @Data
 @Entity
-@Table(schema = "MED", name = "TB_MEDICO")
+@Table(name = "TB_MEDICO")
 public class Medico {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID_MEDICO")
     private Long id;
 
+    @Column(name = "NOME_MEDICO")
     private String nome;
 
-    @Column(unique = true)
+    @Column(unique = true,name = "CRM_MEDICO")
     private String crm;
 
-    @ManyToOne
+    @Enumerated(EnumType.STRING)
     @JoinColumn(name = "id_especialidade")
     private Especialidade especialidade;
 
-    @Column(unique = true)
+    @Column(unique = true, name = "EMAIL_MEDICO")
     private String email;
 
+    @Column(name = "TELEFONE_MEDICO")
     private String telefone;
 
+    @Column(name = "FLATIVO_MEDICO")
     private Boolean ativo = true;
 }

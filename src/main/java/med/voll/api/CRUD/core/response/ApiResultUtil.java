@@ -2,9 +2,11 @@ package med.voll.api.CRUD.core.response;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 
+@Component
 public class ApiResultUtil <T> {
 
     private final String MSG_USUARIO = "Operação realizada com sucesso";
@@ -41,21 +43,9 @@ public class ApiResultUtil <T> {
         Object object = new HashMap<>();
 
         result.setCdRetorno(cdRetorno);
-
-        if (msgUsuario != null) {
-            result.setMsgUsuario(msgUsuario);
-        }
-
-        if (msgTecnica != null) {
-            result.setMsgTecnica(msgTecnica);
-        }
-
-        if (dados != null) {
-            result.setDados(dados);
-        } else {
-            result.setDados((T) object);
-        }
-
+        result.setMsgUsuario(msgUsuario);
+        result.setMsgTecnica(msgTecnica);
+        result.setDados(dados);
         return result;
     }
 }
