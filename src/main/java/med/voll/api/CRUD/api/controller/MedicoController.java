@@ -1,24 +1,25 @@
 package med.voll.api.CRUD.api.controller;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import lombok.RequiredArgsConstructor;
 import med.voll.api.CRUD.api.dto.MedicoDTO;
 import med.voll.api.CRUD.api.dto.common.PageResponse;
 import med.voll.api.CRUD.core.enums.Especialidade;
 import med.voll.api.CRUD.core.response.ApiResult;
-import med.voll.api.CRUD.domain.entity.medico.Medico;
 import med.voll.api.CRUD.domain.service.medico.MedicoService;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @Validated
@@ -41,18 +42,23 @@ public class MedicoController {
     }
 
     @GetMapping(value = "buscar")
-    public ResponseEntity<ApiResult<MedicoDTO.Response.Medico>> buscar (MedicoDTO.CdCrm crm){
+    public ResponseEntity<ApiResult<MedicoDTO.Response.Medico>> buscar (
+            @Pattern(regexp = "^CRM[- ]?[A-Z]{2}[- ]?\\d{1,6}$", message = "CRM inválido") @RequestParam String crm){
         return medicoService.buscar(crm);
     }
 
-    @GetMapping(value = "ativarMedico")
-    public ResponseEntity<ApiResult<MedicoDTO.Response.Medico>> ativarMedico (MedicoDTO.CdCrm crm){
+    @PatchMapping(value = "ativarMedico")
+    public ResponseEntity<ApiResult<MedicoDTO.Response.Medico>> ativarMedico (
+            @Pattern(regexp = "^CRM[- ]?[A-Z]{2}[- ]?\\d{1,6}$", message = "CRM inválido. Use o formato: CRM-UF 123456")
+            @RequestParam String crm){
         return medicoService.ativarMedico(crm);
     }
 
-    @GetMapping(value = "desativarMedico")
-    public ResponseEntity<ApiResult<MedicoDTO.Response.Medico>> desativarMedico (MedicoDTO.CdCrm crm){
-        return medicoService.desativarMedico(crm);
+    @PatchMapping(value = "desativarMedico")
+    public ResponseEntity<ApiResult<MedicoDTO.Response.Medico>> desativarMedico (
+            @Pattern(regexp = "^CRM[- ]?[A-Z]{2}[- ]?\\d{1,6}$", message = "CRM inválido. Use o formato: CRM-UF 123456")
+            @RequestParam String crm){
+    return medicoService.desativarMedico(crm);
     }
 
     @GetMapping(value = "listarTodosMedicos")
@@ -60,8 +66,17 @@ public class MedicoController {
         return medicoService.listarMedicos(pageable);
     }
 
-
-
-
-
+    @GetMapping(value = "listarMedicosPorEspecialidade")
+    public ResponseEntity<ApiResult<PageResponse<MedicoDTO.Response.Medico>>> buscarPorEspecialidade
+            (@RequestParam Especialidade especialidade, Pageable pageable){
+        return medicoService.buscarPorEspecialidade(especialidade, pageable);
     }
+
+    @GetMapping(value = "buscarPorNome")
+    ResponseEntity<ApiResult<MedicoDTO.Response.Medico>> buscarPeloNome (
+            @Size(min = 3, max = 100, message = "Nome deve ter entre 3 e 100 caracteres")
+            @RequestParam String nome){
+        return medicoService.buscarPeloNome(nome);
+    }
+
+}

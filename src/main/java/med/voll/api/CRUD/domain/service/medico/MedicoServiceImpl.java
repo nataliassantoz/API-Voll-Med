@@ -35,7 +35,13 @@ public class MedicoServiceImpl implements MedicoService{
 
         if (medicoOpt.isPresent()) {
             throw new ServiceException(
-                    "Médico " +  medicoReq.getDsNome() + "- CRM " + medicoReq.getCdCrm() + " já cadastrado na base de dados."
+                    "Médico " +  medicoReq.getDsNome() + " - CRM " + medicoReq.getCdCrm() + " já cadastrado na base de dados."
+            );
+        }
+
+        if (medicoRepository.findByEmail(medicoReq.getDsEmail()).isPresent()) {
+            throw new ServiceException(
+                    "E-mail " + medicoReq.getDsEmail() + " já cadastrado na base de dados."
             );
         }
 
@@ -71,9 +77,9 @@ public class MedicoServiceImpl implements MedicoService{
     }
 
     @Override
-    public ResponseEntity<ApiResult<MedicoDTO.Response.Medico>> buscar (MedicoDTO.CdCrm crm){
+    public ResponseEntity<ApiResult<MedicoDTO.Response.Medico>> buscar (String crm){
 
-        Medico medico = buscarMedicoPorCrm(crm.getCdCrm());
+        Medico medico = buscarMedicoPorCrm(crm);
 
         MedicoDTO.Response.Medico response =
                 medicoMapper.toResponse(medico);
@@ -94,8 +100,19 @@ public class MedicoServiceImpl implements MedicoService{
     }
 
     @Override
-    public ResponseEntity<ApiResult<MedicoDTO.Response.Medico>> ativarMedico (MedicoDTO.CdCrm crm){
-        Medico medico = buscarMedicoPorCrm(crm.getCdCrm());
+    public ResponseEntity<ApiResult<MedicoDTO.Response.Medico>> buscarPeloNome (String nome){
+        Medico medico = medicoRepository.findByNome(nome)
+                .orElseThrow(() -> new ServiceException(
+                        "Médico - Nome " + nome+ " não encontrado na base de dados."
+                ));
+        MedicoDTO.Response.Medico response =
+                medicoMapper.toResponse(medico);
+        return api.resultSucesso(OK, response);
+    }
+
+    @Override
+    public ResponseEntity<ApiResult<MedicoDTO.Response.Medico>> ativarMedico (String crm){
+        Medico medico = buscarMedicoPorCrm(crm);
 
         medico.setAtivo(true);
         medicoRepository.save(medico);
@@ -103,8 +120,8 @@ public class MedicoServiceImpl implements MedicoService{
     }
 
     @Override
-    public ResponseEntity<ApiResult<MedicoDTO.Response.Medico>> desativarMedico (MedicoDTO.CdCrm crm){
-        Medico medico = buscarMedicoPorCrm(crm.getCdCrm());
+    public ResponseEntity<ApiResult<MedicoDTO.Response.Medico>> desativarMedico (String crm){
+        Medico medico = buscarMedicoPorCrm(crm);
 
         medico.setAtivo(false);
         medicoRepository.save(medico);
@@ -122,23 +139,10 @@ public class MedicoServiceImpl implements MedicoService{
         return apiPage.resultSucesso(OK, response);
     }
 
-
-
     private Medico buscarMedicoPorCrm(String crm) {
         return medicoRepository.findByCrm(crm)
                 .orElseThrow(() -> new ServiceException(
                         "Médico - CRM " + crm + " não encontrado na base de dados."
                 ));
     }
-
-
-
-
-
-
-
-
-
-
-
 }

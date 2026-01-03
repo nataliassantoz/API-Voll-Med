@@ -1,6 +1,5 @@
 package med.voll.api.CRUD.core.enums;
 
-import jakarta.persistence.Entity;
 import lombok.Getter;
 
 @Getter
