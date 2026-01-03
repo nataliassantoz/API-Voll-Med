@@ -54,6 +54,12 @@ public enum MedicoDTO {;
         String getNrTelefone();
     }
 
+    public interface FlAtivo {
+
+        @NotNull
+        Boolean getFlAtivo();
+    }
+
     public enum Request {;
 
         @Data
@@ -72,13 +78,14 @@ public enum MedicoDTO {;
 
         @Data
         public static class Medico
-                implements DsNome, CdCrm, DsEspecialidade, DsEmail, NrTelefone {
+                implements DsNome, CdCrm, DsEspecialidade, DsEmail, NrTelefone, FlAtivo {
 
             private String dsNome;
             private String cdCrm;
             private Especialidade dsEspecialidade;
             private String dsEmail;
             private String nrTelefone;
+            private Boolean flAtivo;
         }
 
         public record PageResponse<T>(

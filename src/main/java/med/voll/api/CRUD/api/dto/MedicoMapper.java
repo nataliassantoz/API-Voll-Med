@@ -12,6 +12,7 @@ public interface MedicoMapper {
         @Mapping(source = "dsEspecialidade", target = "especialidade")
         @Mapping(source = "dsEmail", target = "email")
         @Mapping(source = "nrTelefone", target = "telefone")
+        @Mapping(source = "ativo", target = "flAtivo")
         Medico toEntity(MedicoDTO.Request.Medico request);
 
         @Mapping(source = "nome", target = "dsNome")
@@ -19,5 +20,6 @@ public interface MedicoMapper {
         @Mapping(source = "especialidade", target = "dsEspecialidade")
         @Mapping(source = "email", target = "dsEmail")
         @Mapping(source = "telefone", target = "nrTelefone")
+        @Mapping(source = "ativo", target = "flAtivo")
         MedicoDTO.Response.Medico toResponse(Medico entity);
     }

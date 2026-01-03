@@ -1,5 +1,6 @@
 package med.voll.api.CRUD.domain.service.medico;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import med.voll.api.CRUD.api.dto.MedicoDTO;
 import med.voll.api.CRUD.api.dto.MedicoMapper;
@@ -19,6 +20,7 @@ import java.util.Optional;
 
 import static org.springframework.http.HttpStatus.OK;
 
+@Transactional
 @Service
 @RequiredArgsConstructor
 public class MedicoServiceImpl implements MedicoService{
@@ -65,6 +67,12 @@ public class MedicoServiceImpl implements MedicoService{
 
         Medico medico = buscarMedicoPorCrm(medicoReq.getCdCrm());
 
+        if (medico.getEmail().equals(medicoReq.getDsEmail())
+                && medicoRepository.findByEmail(medicoReq.getDsEmail()).isPresent()) {
+            throw new ServiceException("E-mail já cadastrado.");
+        }
+
+        medico.setNome(medicoReq.getDsNome());
         medico.setEspecialidade(medicoReq.getDsEspecialidade());
         medico.setEmail(medicoReq.getDsEmail());
         medico.setTelefone(medicoReq.getNrTelefone());
@@ -100,14 +108,13 @@ public class MedicoServiceImpl implements MedicoService{
     }
 
     @Override
-    public ResponseEntity<ApiResult<MedicoDTO.Response.Medico>> buscarPeloNome (String nome){
-        Medico medico = medicoRepository.findByNome(nome)
-                .orElseThrow(() -> new ServiceException(
-                        "Médico - Nome " + nome+ " não encontrado na base de dados."
-                ));
-        MedicoDTO.Response.Medico response =
-                medicoMapper.toResponse(medico);
-        return api.resultSucesso(OK, response);
+    public ResponseEntity<ApiResult<PageResponse<MedicoDTO.Response.Medico>>> buscarPeloNome (String nome, Pageable pageable){
+
+        Page<Medico> page = medicoRepository.findByNomeContainingIgnoreCaseAndAtivoTrue(nome, pageable);
+
+        PageResponse<MedicoDTO.Response.Medico> response =
+                PageResponse.from(page, medicoMapper::toResponse);
+        return apiPage.resultSucesso(OK, response);
     }
 
     @Override

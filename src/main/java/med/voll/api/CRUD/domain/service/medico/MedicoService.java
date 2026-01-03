@@ -17,6 +17,6 @@ public interface MedicoService {
     ResponseEntity<ApiResult<PageResponse<MedicoDTO.Response.Medico>>> listarMedicos (Pageable pageable);
     ResponseEntity<ApiResult<PageResponse<MedicoDTO.Response.Medico>>> buscarPorEspecialidade
             (Especialidade especialidade, Pageable pageable);
-    ResponseEntity<ApiResult<MedicoDTO.Response.Medico>> buscarPeloNome (String nome);
+    ResponseEntity<ApiResult<PageResponse<MedicoDTO.Response.Medico>>> buscarPeloNome (String nome, Pageable pageable);
 
     }
