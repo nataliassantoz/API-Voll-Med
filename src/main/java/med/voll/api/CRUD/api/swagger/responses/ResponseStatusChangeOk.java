@@ -12,8 +12,8 @@ import java.lang.annotation.Target;
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 @Operation(
-        summary = "Alterar status do recurso",
-        description = "Ativa ou desativa um recurso"
+        summary = "Alterar status de em médico",
+        description = "Ativa ou desativa a flag do perfil de um médico"
 )
 @ApiResponses({
         @ApiResponse(responseCode = "200", description = "Status alterado com sucesso"),

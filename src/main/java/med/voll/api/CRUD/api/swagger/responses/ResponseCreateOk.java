@@ -13,7 +13,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Operation(
         summary = "Criar médico na base de dados",
-        description = "Realiza a criação de um novo recurso"
+        description = "Realiza a criação de um novo médico"
 )
 @ApiResponses({
         @ApiResponse(responseCode = "200", description = "Recurso criado com sucesso"),

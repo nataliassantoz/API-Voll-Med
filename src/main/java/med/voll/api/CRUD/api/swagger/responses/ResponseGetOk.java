@@ -12,8 +12,8 @@ import java.lang.annotation.Target;
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 @Operation(
-        summary = "Buscar recurso por identificador",
-        description = "Busca um recurso a partir de um identificador único"
+        summary = "Buscar médico por identificador",
+        description = "Busca um  médico a partir de um identificador único"
 )
 @ApiResponses({
         @ApiResponse(responseCode = "200", description = "Recurso encontrado"),

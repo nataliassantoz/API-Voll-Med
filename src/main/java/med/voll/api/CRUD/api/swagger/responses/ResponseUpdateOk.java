@@ -12,8 +12,8 @@ import java.lang.annotation.Target;
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 @Operation(
-        summary = "Atualizar recurso",
-        description = "Atualiza um recurso existente"
+        summary = "Atualizar médico",
+        description = "Atualiza o perfil de um médico existente"
 )
 @ApiResponses({
         @ApiResponse(responseCode = "200", description = "Recurso atualizado com sucesso"),
