@@ -9,9 +9,12 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import lombok.Data;
 import med.voll.api.CRUD.core.enums.Especialidade;
+
+import java.time.LocalDateTime;
 
 @Data
 @Entity
@@ -41,4 +44,13 @@ public class Medico {
 
     @Column(name = "FLATIVO_MEDICO")
     private Boolean ativo = true;
+
+    @Column(name = "DT_CADASTRO", updatable = false)
+    private LocalDateTime dataCadastro;
+
+    @PrePersist
+    private void prePersist() {
+        this.dataCadastro = LocalDateTime.now();
+        this.ativo = true;
+    }
 }
