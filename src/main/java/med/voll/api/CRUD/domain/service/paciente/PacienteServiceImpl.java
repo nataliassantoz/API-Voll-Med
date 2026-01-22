@@ -29,13 +29,7 @@ public class PacienteServiceImpl implements PacienteService{
     @Override
     public ResponseEntity<ApiResult<PacienteDTO.Response.Paciente>> cadastrar(PacienteDTO.Request.Paciente pacienteReq){
 
-        Optional<Paciente> pacienteOpt = pacienteRepository.findByCpf(pacienteReq.getNrCpf());
-
-        if(pacienteOpt.isPresent()){
-            throw new ServiceException(
-                    "Paciente " +  pacienteReq.getDsNome() + " - CPF " + pacienteReq.getNrCpf() + " já cadastrado na base de dados."
-            );
-        }
+        validarPacienteNaoExistente(pacienteReq.getNrCpf(), pacienteReq.getDsNome());
 
         if (pacienteRepository.findByEmail(pacienteReq.getDsEmail()).isPresent()) {
             throw new ServiceException(
@@ -49,7 +43,7 @@ public class PacienteServiceImpl implements PacienteService{
         paciente.setCpf(pacienteReq.getNrCpf());
         paciente.setEmail(pacienteReq.getDsEmail());
         paciente.setTelefone(pacienteReq.getNrTelefone());
-        paciente.setDataNascimento(LocalDate.parse(pacienteReq.getDtNascimento()));
+        paciente.setDataNascimento(pacienteReq.getDtNascimento());
         paciente.setEndereco(pacienteReq.getDsEndereco());
         paciente.setSexo(pacienteReq.getTpSexo());
         paciente.setPlanoSaude(pacienteReq.getDsPlanoSaude());
@@ -59,4 +53,61 @@ public class PacienteServiceImpl implements PacienteService{
         PacienteDTO.Response.Paciente response = pacienteMapper.toResponse(paciente);
         return api.resultSucesso(OK, response);
     }
+
+    @Override
+    public ResponseEntity<ApiResult<PacienteDTO.Response.Paciente>> atualizar(PacienteDTO.Request.Paciente pacienteReq){
+
+        Paciente paciente = buscarPacienteExistente(pacienteReq.getNrCpf());
+
+        paciente.setEndereco(pacienteReq.getDsEndereco());
+        paciente.setTelefone(pacienteReq.getNrTelefone());
+        paciente.setPlanoSaude(pacienteReq.getDsPlanoSaude());
+        paciente.setEmail(pacienteReq.getDsEmail());
+
+        pacienteRepository.save(paciente);
+        PacienteDTO.Response.Paciente response = pacienteMapper.toResponse(paciente);
+        return api.resultSucesso(OK, response);
+    }
+
+    @Override
+    public ResponseEntity<ApiResult<PacienteDTO.Response.Paciente>> buscarPaciente(String cpf) {
+        Paciente paciente = buscarPacienteExistente(cpf);
+        PacienteDTO.Response.Paciente response = pacienteMapper.toResponse(paciente);
+        return api.resultSucesso(OK, response);
+    }
+
+    @Override
+    public ResponseEntity<ApiResult<PacienteDTO.Response.Paciente>> desativarPaciente(String cpf) {
+        return alterarStatusPaciente(cpf, false);
+    }
+
+    @Override
+    public ResponseEntity<ApiResult<PacienteDTO.Response.Paciente>> ativarPaciente(String cpf) {
+        return alterarStatusPaciente(cpf, true);
+    }
+
+    private void validarPacienteNaoExistente(String cpf, String nome) {
+        if (pacienteRepository.findByCpf(cpf).isPresent()) {
+            throw new ServiceException("Paciente %s - CPF: %s já cadastrado na base de dados.".formatted(nome, cpf));
+        }
+    }
+
+    private Paciente buscarPacienteExistente(String cpf) {
+        return pacienteRepository.findByCpf(cpf)
+                .orElseThrow(() -> new ServiceException("Paciente - CPF: %s não encontrado na base de dados.".formatted(cpf)));
+    }
+
+    private ResponseEntity<ApiResult<PacienteDTO.Response.Paciente>> alterarStatusPaciente(
+            String cpf, boolean ativo) {
+
+        Paciente paciente = buscarPacienteExistente(cpf);
+        paciente.setAtivo(ativo);
+        pacienteRepository.save(paciente);
+
+        PacienteDTO.Response.Paciente response = pacienteMapper.toResponse(paciente);
+        return api.resultSucesso(OK, response);
+    }
+
+
+
 }

@@ -16,7 +16,7 @@ import java.lang.annotation.Target;
         description = "Realiza a criação de um novo recurso"
 )
 @ApiResponses({
-        @ApiResponse(responseCode = "200", description = "Recurso criado com sucesso"),
+        @ApiResponse(responseCode = "201", description = "Recurso criado com sucesso"),
         @ApiResponse(responseCode = "400", description = "Erro de validação"),
         @ApiResponse(responseCode = "409", description = "Recurso já existente")
 })

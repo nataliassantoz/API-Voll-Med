@@ -27,7 +27,7 @@ public interface PacienteMapper {
     @Mapping(source = "endereco", target = "dsEndereco")
     @Mapping(source = "sexo", target = "tpSexo")
     @Mapping(source = "planoSaude", target = "dsPlanoSaude")
-    @Mapping(source = "ativo", target = "ativo")
+    @Mapping(source = "ativo", target = "isAtivo")
     @Mapping(target = "dtNascimento", ignore = true)
     PacienteDTO.Response.Paciente toResponse(Paciente entity);
 }

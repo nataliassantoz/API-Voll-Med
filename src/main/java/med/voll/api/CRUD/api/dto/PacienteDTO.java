@@ -11,6 +11,8 @@ import lombok.Data;
 import med.voll.api.CRUD.core.enums.Sexo;
 import med.voll.api.CRUD.core.validation.CpfValido;
 
+import java.time.LocalDate;
+
 public enum PacienteDTO {;
 
     public interface DsNome{
@@ -54,13 +56,10 @@ public enum PacienteDTO {;
 
     public interface DtNascimento{
 
-        @Schema(
-                example = "1998-05-21",
-                description = "Data de nascimento no formato ISO (yyyy-MM-dd)"
-        )
+        @Schema(example = "1998-05-21", description = "Data de nascimento no formato ISO (yyyy-MM-dd)")
         @NotNull(message = "Data de nascimento é obrigatória")
         @Past(message = "Data de nascimento deve ser uma data passada")
-        String getDtNascimento();
+        LocalDate getDtNascimento();
     }
 
     public interface TpSexo {
@@ -88,7 +87,7 @@ public enum PacienteDTO {;
             private String dsEmail;
             private String nrTelefone;
             private String dsEndereco;
-            private String dtNascimento;
+            private LocalDate dtNascimento;
             private Sexo tpSexo;
             private String dsPlanoSaude;
         }
@@ -103,11 +102,11 @@ public enum PacienteDTO {;
             private String nrCpf;
             private Sexo tpSexo;
             private String dsPlanoSaude;
-            private Boolean ativo;
+            private Boolean isAtivo;
             private String dsEmail;
             private String dsEndereco;
             private String nrTelefone;
-            private String dtNascimento;
+            private LocalDate dtNascimento;
         }
     }
 }
