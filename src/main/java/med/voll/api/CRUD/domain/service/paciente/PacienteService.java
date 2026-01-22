@@ -12,6 +12,4 @@ public interface PacienteService {
     ResponseEntity<ApiResult<PacienteDTO.Response.Paciente>> desativarPaciente(String cpf);
     ResponseEntity<ApiResult<PacienteDTO.Response.Paciente>> ativarPaciente(String cpf);
 
-
-
     }

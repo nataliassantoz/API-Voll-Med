@@ -12,9 +12,6 @@ import med.voll.api.CRUD.domain.repository.paciente.PacienteRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
-import java.util.Optional;
-
 import static org.springframework.http.HttpStatus.OK;
 
 @Transactional
@@ -107,7 +104,4 @@ public class PacienteServiceImpl implements PacienteService{
         PacienteDTO.Response.Paciente response = pacienteMapper.toResponse(paciente);
         return api.resultSucesso(OK, response);
     }
-
-
-
 }
