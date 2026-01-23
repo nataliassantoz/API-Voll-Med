@@ -30,14 +30,14 @@ public class PacienteController {
     private final PacienteService pacienteService;
 
     @ResponseCreateOk
-    @PostMapping
+    @PostMapping("/cadastrar")
     public ResponseEntity<ApiResult<PacienteDTO.Response.Paciente>> cadastrar (
             @RequestBody @Valid PacienteDTO.Request.Paciente paciente){
         return pacienteService.cadastrar(paciente);
     }
 
     @ResponseUpdateOk
-    @PatchMapping
+    @PatchMapping("/atualizar")
     public ResponseEntity<ApiResult<PacienteDTO.Response.Paciente>> atualizar (
             @RequestBody @Valid PacienteDTO.Request.Paciente paciente){
         return pacienteService.atualizar(paciente);
@@ -50,13 +50,13 @@ public class PacienteController {
     }
 
     @ResponseUpdateOk
-    @PatchMapping
+    @PatchMapping("/{cpf}/desativar")
     public ResponseEntity<ApiResult<PacienteDTO.Response.Paciente>> desativarPaciente(@PathVariable String cpf){
         return pacienteService.desativarPaciente(cpf);
     }
 
     @ResponseUpdateOk
-    @PatchMapping
+    @PatchMapping("/{cpf}/ativar")
     public ResponseEntity<ApiResult<PacienteDTO.Response.Paciente>> ativarPaciente(@PathVariable String cpf){
         return pacienteService.ativarPaciente(cpf);
     }
