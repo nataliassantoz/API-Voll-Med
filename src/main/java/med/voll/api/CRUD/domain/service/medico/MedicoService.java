@@ -11,12 +11,12 @@ public interface MedicoService {
 
     ResponseEntity<ApiResult<MedicoDTO.Response.Medico>> cadastrar (MedicoDTO.Request.Medico medico);
     ResponseEntity<ApiResult<MedicoDTO.Response.Medico>> atualizar (MedicoDTO.Request.Medico medicoReq);
-    ResponseEntity<ApiResult<MedicoDTO.Response.Medico>> buscar (String crm);
-    ResponseEntity<ApiResult<MedicoDTO.Response.Medico>> ativarMedico (String crm);
-    ResponseEntity<ApiResult<MedicoDTO.Response.Medico>> desativarMedico (String crm);
+    ResponseEntity<ApiResult<MedicoDTO.Response.Medico>> buscar (String dsCrm);
+    ResponseEntity<ApiResult<MedicoDTO.Response.Medico>> ativarMedico (String dsCrm);
+    ResponseEntity<ApiResult<MedicoDTO.Response.Medico>> desativarMedico (String dsCrm);
     ResponseEntity<ApiResult<PageResponse<MedicoDTO.Response.Medico>>> listarMedicos (Pageable pageable);
     ResponseEntity<ApiResult<PageResponse<MedicoDTO.Response.Medico>>> buscarPorEspecialidade
-            (Especialidade especialidade, Pageable pageable);
-    ResponseEntity<ApiResult<PageResponse<MedicoDTO.Response.Medico>>> buscarPeloNome (String nome, Pageable pageable);
+            (Especialidade dsEspecialidade, Pageable pageable);
+    ResponseEntity<ApiResult<PageResponse<MedicoDTO.Response.Medico>>> buscarPeloNome (String dsNome, Pageable pageable);
 
     }

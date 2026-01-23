@@ -6,5 +6,5 @@ import lombok.Getter;
 @Getter
 public enum Sexo {
     MASCULINO,
-    FEIMINO;
+    FEMININO;
 }
