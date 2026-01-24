@@ -16,6 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
 import java.util.Optional;
 
 import static org.springframework.http.HttpStatus.OK;
@@ -67,14 +68,14 @@ public class MedicoServiceImpl implements MedicoService{
 
         Medico medico = buscarMedicoPorCrm(medicoReq.getCdCrm());
 
-        if (medico.getEmail().equals(medicoReq.getDsEmail())
-                && medicoRepository.findByEmail(medicoReq.getDsEmail()).isPresent()) {
-            throw new ServiceException("E-mail já cadastrado.");
+        String email = medicoReq.getDsEmail();
+        if (!Objects.equals(medico.getEmail(), email)
+                && medicoRepository.findByEmail(email).isEmpty()) {
+            medico.setEmail(medicoReq.getDsEmail());
         }
 
         medico.setNome(medicoReq.getDsNome());
         medico.setEspecialidade(medicoReq.getDsEspecialidade());
-        medico.setEmail(medicoReq.getDsEmail());
         medico.setTelefone(medicoReq.getNrTelefone());
 
         Medico medicoSalvo = medicoRepository.save(medico);
@@ -85,9 +86,9 @@ public class MedicoServiceImpl implements MedicoService{
     }
 
     @Override
-    public ResponseEntity<ApiResult<MedicoDTO.Response.Medico>> buscar (String crm){
+    public ResponseEntity<ApiResult<MedicoDTO.Response.Medico>> buscar (String dsCrm){
 
-        Medico medico = buscarMedicoPorCrm(crm);
+        Medico medico = buscarMedicoPorCrm(dsCrm);
 
         MedicoDTO.Response.Medico response =
                 medicoMapper.toResponse(medico);
@@ -96,11 +97,11 @@ public class MedicoServiceImpl implements MedicoService{
 
     @Override
     public ResponseEntity<ApiResult<PageResponse<MedicoDTO.Response.Medico>>> buscarPorEspecialidade
-            (Especialidade especialidade, Pageable pageable){
+            (Especialidade dsEspecialidade, Pageable pageable){
 
         Page<Medico> page;
         page = medicoRepository.findByEspecialidadeAndAtivoTrue(
-                especialidade, pageable);
+                dsEspecialidade, pageable);
 
         PageResponse<MedicoDTO.Response.Medico> response =
                 PageResponse.from(page, medicoMapper::toResponse);
@@ -108,9 +109,9 @@ public class MedicoServiceImpl implements MedicoService{
     }
 
     @Override
-    public ResponseEntity<ApiResult<PageResponse<MedicoDTO.Response.Medico>>> buscarPeloNome (String nome, Pageable pageable){
+    public ResponseEntity<ApiResult<PageResponse<MedicoDTO.Response.Medico>>> buscarPeloNome (String dsNome, Pageable pageable){
 
-        Page<Medico> page = medicoRepository.findByNomeContainingIgnoreCaseAndAtivoTrue(nome, pageable);
+        Page<Medico> page = medicoRepository.findByNomeContainingIgnoreCaseAndAtivoTrue(dsNome, pageable);
 
         PageResponse<MedicoDTO.Response.Medico> response =
                 PageResponse.from(page, medicoMapper::toResponse);
@@ -118,8 +119,8 @@ public class MedicoServiceImpl implements MedicoService{
     }
 
     @Override
-    public ResponseEntity<ApiResult<MedicoDTO.Response.Medico>> ativarMedico (String crm){
-        Medico medico = buscarMedicoPorCrm(crm);
+    public ResponseEntity<ApiResult<MedicoDTO.Response.Medico>> ativarMedico (String dsCrm){
+        Medico medico = buscarMedicoPorCrm(dsCrm);
 
         medico.setAtivo(true);
         medicoRepository.save(medico);
@@ -127,8 +128,8 @@ public class MedicoServiceImpl implements MedicoService{
     }
 
     @Override
-    public ResponseEntity<ApiResult<MedicoDTO.Response.Medico>> desativarMedico (String crm){
-        Medico medico = buscarMedicoPorCrm(crm);
+    public ResponseEntity<ApiResult<MedicoDTO.Response.Medico>> desativarMedico (String dsCrm){
+        Medico medico = buscarMedicoPorCrm(dsCrm);
 
         medico.setAtivo(false);
         medicoRepository.save(medico);

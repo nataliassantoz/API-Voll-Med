@@ -57,24 +57,24 @@ public class MedicoController {
     public ResponseEntity<ApiResult<MedicoDTO.Response.Medico>> buscar (
 
             @Parameter(description = "CRM do médico no formato CRM-UF 123456", example = "CRM-SP 123456")
-            @Pattern(regexp = CRM_REGEX, message = CRM_MENSAGEM_INVALIDA) @RequestParam String crm){
-        return medicoService.buscar(crm);
+            @Pattern(regexp = CRM_REGEX, message = CRM_MENSAGEM_INVALIDA) @RequestParam String dsCrm){
+        return medicoService.buscar(dsCrm);
     }
 
     @ResponseStatusChangeOk
     @PatchMapping(value = "ativarMedico")
     public ResponseEntity<ApiResult<MedicoDTO.Response.Medico>> ativarMedico (
             @Pattern(regexp = CRM_REGEX, message = CRM_MENSAGEM_INVALIDA)
-            @RequestParam String crm){
-        return medicoService.ativarMedico(crm);
+            @RequestParam String dsCrm){
+        return medicoService.ativarMedico(dsCrm);
     }
 
     @ResponseStatusChangeOk
     @PatchMapping(value = "desativarMedico")
     public ResponseEntity<ApiResult<MedicoDTO.Response.Medico>> desativarMedico (
             @Pattern(regexp = CRM_REGEX, message = CRM_MENSAGEM_INVALIDA)
-            @RequestParam String crm){
-    return medicoService.desativarMedico(crm);
+            @RequestParam String dsCrm){
+    return medicoService.desativarMedico(dsCrm);
     }
 
     @ResponseListOk
@@ -86,16 +86,16 @@ public class MedicoController {
     @ResponseGetOk
     @GetMapping(value = "listarMedicosPorEspecialidade")
     public ResponseEntity<ApiResult<PageResponse<MedicoDTO.Response.Medico>>> buscarPorEspecialidade
-            (@RequestParam Especialidade especialidade, Pageable pageable){
-        return medicoService.buscarPorEspecialidade(especialidade, pageable);
+            (@RequestParam Especialidade dsEspecialidade, Pageable pageable){
+        return medicoService.buscarPorEspecialidade(dsEspecialidade, pageable);
     }
 
     @ResponseGetOk
     @GetMapping(value = "buscarPorNome")
     ResponseEntity<ApiResult<PageResponse<MedicoDTO.Response.Medico>>> buscarPeloNome (
             @Size(min = 3, max = 100, message = "Nome deve ter entre 3 e 100 caracteres")
-            @RequestParam String nome, Pageable pageable){
-        return medicoService.buscarPeloNome(nome, pageable);
+            @RequestParam String dsNome, Pageable pageable){
+        return medicoService.buscarPeloNome(dsNome, pageable);
     }
 
 }

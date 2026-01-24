@@ -1,7 +1,6 @@
 package med.voll.api.CRUD.core.configuration;
 
-import io.swagger.v3.oas.models.OpenAPI;
-import io.swagger.v3.oas.models.info.Info;
+import org.springdoc.core.models.GroupedOpenApi;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -10,10 +9,18 @@ import org.springframework.context.annotation.Configuration;
 public class OpenApiConfiguration {
 
     @Bean
-    public OpenAPI customOpenAPI() {
-        return new OpenAPI().info(new Info()
-                .title("API MedClinic")
-                .version("1.0")
-                .description("Documentação da API de médicos"));
+    public GroupedOpenApi pacientesApi() {
+        return GroupedOpenApi.builder()
+                .group("Pacientes")
+                .pathsToMatch("/pacientes/**")
+                .build();
+    }
+
+    @Bean
+    public GroupedOpenApi medicosApi() {
+        return GroupedOpenApi.builder()
+                .group("Médicos")
+                .pathsToMatch("/medico/**")
+                .build();
     }
 }

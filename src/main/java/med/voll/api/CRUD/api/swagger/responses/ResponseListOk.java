@@ -12,8 +12,8 @@ import java.lang.annotation.Target;
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 @Operation(
-        summary = "Listar médicos",
-        description = "Lista médicos com paginação e filtros opcionais"
+        summary = "Listar recursos",
+        description = "Lista recursos com paginação e filtros opcionais"
 )
 @ApiResponses({
         @ApiResponse(responseCode = "200", description = "Lista retornada com sucesso")
