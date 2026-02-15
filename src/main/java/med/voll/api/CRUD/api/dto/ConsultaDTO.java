@@ -41,7 +41,7 @@ public enum ConsultaDTO {;
 
         @Schema(example = "AGENDADA", description = "Status atual da consulta")
         @NotNull(message = "Status da consulta é obrigatório")
-        StatusConsulta getStatusConsulta();
+        String getStatusConsulta();
     }
 
     public interface DsObservacao {
@@ -103,7 +103,7 @@ public enum ConsultaDTO {;
 
         @Data
         public static class Consulta implements
-                DtConsulta, HrInicioConsulta, HrFimConsulta, IdMedico, NrCpfPaciente, DsObservacao {
+                DtConsulta, HrInicioConsulta, HrFimConsulta, IdMedico, NrCpfPaciente, DsObservacao, StConsulta {
 
             private LocalDate dtConsulta;
             private LocalTime hrInicioConsulta;
@@ -111,6 +111,7 @@ public enum ConsultaDTO {;
             private Long idMedico;
             private String nrCpfPaciente;
             private String dsObservacao;
+            private String statusConsulta;
         }
     }
 

@@ -48,14 +48,9 @@ public class MedicoServiceImpl implements MedicoService{
             );
         }
 
-        Medico medico = new Medico();
-        medico.setNome(medicoReq.getDsNome());
-        medico.setCrm(medicoReq.getCdCrm());
-        medico.setEspecialidade(medicoReq.getDsEspecialidade());
-        medico.setEmail(medicoReq.getDsEmail());
-        medico.setTelefone(medicoReq.getNrTelefone());
+        Medico medicoSalvo = medicoMapper.toEntity(medicoReq);
 
-        Medico medicoSalvo = medicoRepository.save(medico);
+        medicoRepository.save(medicoSalvo);
 
         MedicoDTO.Response.Medico response =
                 medicoMapper.toResponse(medicoSalvo);
