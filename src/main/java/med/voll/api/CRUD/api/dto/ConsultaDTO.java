@@ -4,37 +4,26 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 import med.voll.api.CRUD.core.enums.StatusConsulta;
 import med.voll.api.CRUD.core.validation.CpfValido;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 public enum ConsultaDTO {;
 
-    public interface DtConsulta{
+    public interface DataHoraConsulta {
 
-        @Schema(example = "2026-02-05", description = "Data da consulta no formato ISO (yyyy-MM-dd)")
-        @NotNull(message = "Data da consulta é obrigatória")
-        @Future(message = "Data da consulta deve ser uma data futura")
-        LocalDate getDtConsulta();
-    }
-
-    public interface HrInicioConsulta {
-
-        @Schema(example = "14:30", description = "Hora da consulta no formato HH:mm")
-        @NotNull(message = "Hora da consulta é obrigatória")
-        LocalTime getHrInicioConsulta();
-    }
-
-    public interface HrFimConsulta {
-
-        @Schema(example = "15:00", description = "Hora de término da consulta no formato HH:mm")
-        @NotNull(message = "Hora fim da consulta é obrigatória")
-        LocalTime getHrFimConsulta();
+        @Schema(
+                example = "2026-02-05T14:30",
+                description = "Data e hora da consulta no formato ISO (yyyy-MM-dd'T'HH:mm)"
+        )
+        @NotNull(message = "Data e hora da consulta são obrigatórias")
+        @Future(message = "A consulta deve ser agendada para uma data e hora futura")
+        LocalDateTime getDataHoraConsulta();
     }
 
     public interface StConsulta {
@@ -98,16 +87,13 @@ public enum ConsultaDTO {;
         }
     }
 
-
     public enum Request {;
 
         @Data
-        public static class Consulta implements
-                DtConsulta, HrInicioConsulta, HrFimConsulta, IdMedico, NrCpfPaciente, DsObservacao, StConsulta {
+        public static class Consulta implements DataHoraConsulta, IdMedico, NrCpfPaciente, DsObservacao, StConsulta {
 
+            private LocalDateTime dataHoraConsulta;
             private LocalDate dtConsulta;
-            private LocalTime hrInicioConsulta;
-            private LocalTime hrFimConsulta;
             private Long idMedico;
             private String nrCpfPaciente;
             private String dsObservacao;
@@ -118,9 +104,9 @@ public enum ConsultaDTO {;
     public enum Response {;
 
         @Data
-        public static class Consulta implements
-                IdConsulta,DtConsulta, HrInicioConsulta,HrFimConsulta, StConsulta,DsObservacao,MedicoResumo, PacienteResumo {
+        public static class Consulta implements DataHoraConsulta, IdConsulta, StConsulta,DsObservacao,MedicoResumo, PacienteResumo {
 
+            private LocalDateTime dataHoraConsulta;
             private Long idConsulta;
             private LocalDate dtConsulta;
             private LocalTime hrInicioConsulta;
