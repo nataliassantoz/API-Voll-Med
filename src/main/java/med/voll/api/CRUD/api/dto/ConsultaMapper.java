@@ -1,27 +1,27 @@
 package med.voll.api.CRUD.api.dto;
 
 import med.voll.api.CRUD.domain.entity.consulta.Consulta;
+import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
+@Mapper(componentModel = "spring")
 public interface ConsultaMapper {
 
     @Mapping(source = "id", target = "idConsulta")
-    @Mapping(source = "dataConsulta", target = "dtConsulta")
-    @Mapping(source = "horaInicioConsulta", target = "hrInicioConsulta")
-    @Mapping(source = "horaFimConsulta", target = "hrFimConsulta")
-    @Mapping(source = "statusConsulta", target = "statusConsulta")
     @Mapping(source = "observacao", target = "dsObservacao")
-    @Mapping(source = "medico", target = "medico")
-    @Mapping(source = "paciente", target = "paciente")
+    @Mapping(source = "medico.id", target = "medico.idMedico")
+    @Mapping(source = "medico.nome", target = "medico.dsNome")
+    @Mapping(source = "medico.especialidade", target = "medico.dsEspecialidade")
+    @Mapping(source = "paciente.cpf", target = "paciente.nrCpf")
+    @Mapping(source = "paciente.nome", target = "paciente.dsNome")
     ConsultaDTO.Response.Consulta toResponse(Consulta entity);
 
-    @Mapping(source = "idConsulta", target = "id")
-    @Mapping(source = "dtConsulta", target = "dataConsulta")
-    @Mapping(source = "hrInicioConsulta", target = "horaInicioConsulta")
-    @Mapping(source = "hrFimConsulta", target = "horaFimConsulta")
-    @Mapping(source = "statusConsulta", target = "statusConsulta")
+
     @Mapping(source = "dsObservacao", target = "observacao")
-    @Mapping(source = "medico", target = "medico")
-    @Mapping(source = "paciente", target = "paciente")
+    @Mapping(source = "statusConsulta", target = "statusConsulta")
+    @Mapping(source = "dataHoraConsulta", target = "dataHoraConsulta")
+    @Mapping(target = "medico", ignore = true)
+    @Mapping(target = "paciente", ignore = true)
+    @Mapping(target = "id", ignore = true)
     Consulta toEntity(ConsultaDTO.Request.Consulta consulta);
 }

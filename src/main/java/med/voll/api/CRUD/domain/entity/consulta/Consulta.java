@@ -17,7 +17,6 @@ import med.voll.api.CRUD.domain.entity.medico.Medico;
 import med.voll.api.CRUD.domain.entity.paciente.Paciente;
 
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 
 @Data
 @Entity
@@ -29,14 +28,8 @@ public class Consulta {
     @Column(name = "ID_CONSULTA")
     private Long id;
 
-    @Column(name = "DT_CONSULTA", updatable = false, nullable = false)
-    private LocalDateTime dataConsulta;
-
-    @Column(name = "HR_INICIO_CONSULTA", updatable = true, nullable = false)
-    private LocalTime horaInicioConsulta;
-
-    @Column(name = "HR_FIM_CONSULTA", updatable = true, nullable = false)
-    private LocalTime horaFimConsulta;
+    @Column(name = "DT_HORA_CONSULTA", updatable = false, nullable = false)
+    private LocalDateTime dataHoraConsulta;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "STATUS_CONSULTA")

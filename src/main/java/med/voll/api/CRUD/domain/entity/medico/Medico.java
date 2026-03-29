@@ -33,7 +33,7 @@ public class Medico {
     private String crm;
 
     @Enumerated(EnumType.STRING)
-    @JoinColumn(name = "id_especialidade")
+    @Column(name = "ID_ESPECIALIDADE")
     private Especialidade especialidade;
 
     @Column(unique = true, name = "EMAIL_MEDICO")

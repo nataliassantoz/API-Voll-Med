@@ -9,9 +9,7 @@ import lombok.Data;
 import med.voll.api.CRUD.core.enums.StatusConsulta;
 import med.voll.api.CRUD.core.validation.CpfValido;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 
 public enum ConsultaDTO {;
 
@@ -93,7 +91,6 @@ public enum ConsultaDTO {;
         public static class Consulta implements DataHoraConsulta, IdMedico, NrCpfPaciente, DsObservacao, StConsulta {
 
             private LocalDateTime dataHoraConsulta;
-            private LocalDate dtConsulta;
             private Long idMedico;
             private String nrCpfPaciente;
             private String dsObservacao;
@@ -104,13 +101,10 @@ public enum ConsultaDTO {;
     public enum Response {;
 
         @Data
-        public static class Consulta implements DataHoraConsulta, IdConsulta, StConsulta,DsObservacao,MedicoResumo, PacienteResumo {
+        public static class Consulta implements DataHoraConsulta, IdConsulta, DsObservacao,MedicoResumo, PacienteResumo {
 
             private LocalDateTime dataHoraConsulta;
             private Long idConsulta;
-            private LocalDate dtConsulta;
-            private LocalTime hrInicioConsulta;
-            private LocalTime hrFimConsulta;
             private StatusConsulta statusConsulta;
             private String dsObservacao;
             private MedicoResumo.Medico medico;

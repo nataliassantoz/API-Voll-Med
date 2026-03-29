@@ -10,9 +10,12 @@ import med.voll.api.CRUD.core.response.ApiResult;
 import med.voll.api.CRUD.core.response.ApiResultUtil;
 import med.voll.api.CRUD.domain.entity.consulta.Consulta;
 import med.voll.api.CRUD.domain.repository.consulta.ConsultaRepository;
+import med.voll.api.CRUD.domain.service.medico.MedicoService;
+import med.voll.api.CRUD.domain.service.paciente.PacienteService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static med.voll.api.CRUD.core.enums.StatusConsulta.AGENDADA;
@@ -26,21 +29,21 @@ import static org.springframework.http.HttpStatus.OK;
 public class ConsultaServiceImpl implements ConsultaService{
 
     private final ConsultaRepository consultaRepository;
-    private final Consulta consulta;
     private final ConsultaMapper consultaMapper;
     private final ApiResultUtil<ConsultaDTO.Response.Consulta> api;
     private final ApiResultUtil<PageResponse<ConsultaDTO.Response.Consulta>> apiPage;
+    private final MedicoService medicoService;
+    private final PacienteService pacienteService;
 
     @Override
     public ResponseEntity<ApiResult<ConsultaDTO.Response.Consulta>> agendarConsulta(ConsultaDTO.Request.Consulta consulta){
 
+        LocalDateTime inicio = consulta.getDataHoraConsulta();
+        LocalDateTime fim = inicio.plusHours(1);
+
         boolean horarioOcupado = consultaRepository
-                .existsByMedicoIdAndDtConsultaAndHrInicioConsultaAndStatusConsultaIn(
-                        consulta.getIdMedico(),
-                        consulta.getDtConsulta(),
-                        consulta.getHrInicioConsulta(),
-                        List.of(AGENDADA.getDescricao(), CONFIRMADA.getDescricao())
-                );
+                .existeConsultaConflitante(
+                        consulta.getIdMedico(), inicio, fim, List.of(AGENDADA.getDescricao(), CONFIRMADA.getDescricao()));
 
         if(horarioOcupado){
             throw new ServiceException("O médico já possui uma consulta agendada nesse horário. " +
