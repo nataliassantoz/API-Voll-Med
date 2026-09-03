@@ -9,11 +9,12 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 import med.voll.api.CRUD.core.enums.Especialidade;
+import med.voll.api.CRUD.core.enums.TipoProfissional;
+import med.voll.api.CRUD.core.validation.CpfValido;
 
 import java.util.List;
 
-
-public enum MedicoDTO {;
+public enum ProfissionalDTO {;
 
     public interface DsNome{
 
@@ -21,14 +22,6 @@ public enum MedicoDTO {;
         @NotBlank(message = "Nome é obrigatório")
         @Size(min = 3, max = 100, message = "Nome deve ter entre 3 e 100 caracteres")
         String getDsNome();
-    }
-
-    public interface CdCrm{
-
-        @Schema(example = "CRM-SP 123456")
-        @NotBlank(message = "CRM é obrigatório")
-        @Pattern(regexp = "^CRM[- ]?[A-Z]{2}[- ]?\\d{1,6}$", message = "CRM inválido. Use o formato: CRM-UF 123456")
-        String getCdCrm();
     }
 
     public interface DsEspecialidade{
@@ -60,31 +53,66 @@ public enum MedicoDTO {;
         Boolean getFlAtivo();
     }
 
+    public interface Cpf{
+
+        @Schema(example = "01234567899")
+        @NotBlank(message = "Cpf é obrigatório")
+        @CpfValido
+        String getCpf();
+    }
+
+    public interface TpProfissional {
+
+        @Schema(example = "MEDICO")
+        @NotNull(message = "Tipo do profissional é obrigatório")
+        TipoProfissional getTpProfissional();
+    }
+
+    public interface DsConselho {
+
+        @Schema(example = "CRM")
+        @NotBlank(message = "Conselho é obrigatório")
+        String getDsConselho();
+    }
+
+    public interface NrRegistro {
+
+        @Schema(example = "123456")
+        @NotBlank(message = "Número do registro é obrigatório")
+        String getNrRegistro();
+    }
+
     public enum Request {;
 
         @Data
-        public static class Medico
-                implements DsNome, CdCrm, DsEspecialidade, DsEmail, NrTelefone {
+        public static class Profissional implements DsNome, DsEspecialidade, TpProfissional, DsEmail, NrTelefone,
+                DsConselho, NrRegistro, Cpf {
 
             private String dsNome;
-            private String cdCrm;
             private Especialidade dsEspecialidade;
+            private TipoProfissional tpProfissional;
             private String dsEmail;
             private String nrTelefone;
+            private String dsConselho;
+            private String nrRegistro;
+            private String cpf;
+
         }
     }
 
     public enum Response{;
 
         @Data
-        public static class Medico
-                implements DsNome, CdCrm, DsEspecialidade, DsEmail, NrTelefone, FlAtivo {
+        public static class Profissional implements DsNome, DsEspecialidade, TpProfissional, DsEmail, NrTelefone,
+                DsConselho, NrRegistro, FlAtivo {
 
             private String dsNome;
-            private String cdCrm;
             private Especialidade dsEspecialidade;
+            private TipoProfissional tpProfissional;
             private String dsEmail;
             private String nrTelefone;
+            private String dsConselho;
+            private String nrRegistro;
             private Boolean flAtivo;
         }
 
@@ -95,6 +123,5 @@ public enum MedicoDTO {;
                 long totalElements,
                 int totalPages
         ) {}
-
     }
 }
